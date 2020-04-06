@@ -28,8 +28,7 @@ In this tutorial, you will learn and examine the potential utility of supervised
 
 First, we will introduce the microbial abundance data and how you can calculate the microbial abundance. A detailed tutorial on the microbiome you can find in the metagenomics section (link).
 
-Finally, you will learn how eight different supervised methods, a deep neural network algorithm, three feature selection methods, and two normalization methods can be utilized on microbial data to understand the disease, environment, etc. associated patterns. Further, you will learn to assess the performance of diverse machine learning methods across various microbiome-aware classification tasks and how properly tuned supervised learning methods can achieve very high classification accuracy. Furthermore, you will learn the importance of feature selection methods and normalization techniques and their implementation before machine learning modeling. 
-
+Finally, you will learn how different machine learning algorithm, feature selection, and  normalization methods can be utilized on microbial data to understand the disease, environment, etc. associated patterns. Further, you will learn to assess the performance of diverse machine learning methods across various microbiome-aware classification tasks and how properly tuned supervised learning methods can achieve very high classification accuracy. Furthermore, you will learn the importance of feature selection methods and normalization techniques and their implementation before machine learning modeling. 
 
 
 > ### Agenda
@@ -43,10 +42,7 @@ Finally, you will learn how eight different supervised methods, a deep neural ne
 
 # Microbial abundance analysis with Mothur 
 
-
-Give some background about what the trainees will be doing in the section.
-Remember that many people reading your materials will likely be novices,
-so make sure to explain all the relevant concepts.
+Microbial abundance is the relative representation of different bacterial species found per sample, While the relative abundance can be described by the ratio of the abundance of one species to one or multiple other species presents in a sample collected from the host or an ecosystem. 
 
 
 > ### {% icon comment %} Background: 16s rRNA Amplicon sequencing 
