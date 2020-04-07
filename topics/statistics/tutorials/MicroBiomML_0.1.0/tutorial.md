@@ -42,11 +42,10 @@ Finally, you will learn how different machine learning algorithm, feature select
 
 # Microbial abundance analysis with Mothur 
 
-Microbial abundance is the relative representation of different bacterial species found per sample, While the relative abundance can be described by the ratio of the abundance of one species to one or multiple other species presents in a sample collected from the host or an ecosystem. 
-
+Microbial abundance is the relative representation of different bacterial species found per sample, While the relative abundance can be described by the ratio of the abundance of one species to one or multiple other species presents in a sample collected from the host or an ecosystem. Mothur is an open-source software package for Microbial data analysis. The package is widely used to analyze microbiome data of uncultured microbes and calculate microbial abundance across different samples. A detailed tutorial on the microbiome you can find in the metagenomics section [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 > ### {% icon comment %} Background: 16s rRNA Amplicon sequencing 
->WGS shotgun and amplicon-based sequencing are the two widely used techniques to analyze microbiome.   
+>WGS shotgun and amplicon-based sequencing are the two widely used techniques to analyze microbiome. Image bellow explains the principle and the steps behind microbial abundance analysis.  
 > ![16s rRNA Amplicon sequencing](../../images/microbiomml/16srRNA_sequencing.jpg) <br><br>
 >Microbial abundance is a quantitative approximation of all the  taxa present in a microbiome. 
 > ![16s rRNA Amplicon sequencing](../../images/microbiomml/16srRNA_sequencing_2.jpg) <br><br>
