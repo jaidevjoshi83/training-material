@@ -1,0 +1,8 @@
+gi = GalaxyInstance(url='http://10.66.95.3:8080/', key='b5ba0bcf2790e3ab40915e4c214f11d7')
+
+
+[{u'name': u'trimed80k', u'tags': [], u'deleted': False, u'purged': False, u'url': u'/api/histories/79966582feb6c081', u'published': False, u'id': u'79966582feb6c081', u'model_class': u'History', u'annotation': None}, {u'name': u'Full_data', u'tags': [], u'deleted': False, u'purged': False, u'url': u'/api/histories/911dde3ddb677bcd', u'published': False, u'id': u'911dde3ddb677bcd', u'model_class': u'History', u'annotation': None}, {u'name': u'Newexampledata', u'tags': [], u'deleted': False, u'purged': False, u'url': u'/api/histories/4ff6f47412c3e65e', u'published': False, u'id': u'4ff6f47412c3e65e', u'model_class': u'History', u'annotation': None}, {u'name': u'ExampleData', u'tags': [], u'deleted': False, u'purged': False, u'url': u'/api/histories/a7db2fac67043c7e', u'published': False, u'id': u'a7db2fac67043c7e', u'model_class': u'History', u'annotation': None}]
+
+
+
+gi.tools.upload_file('/Users/joshij/Desktop/MothurExampleData/silva.v4.fasta', '911dde3ddb677bcd')

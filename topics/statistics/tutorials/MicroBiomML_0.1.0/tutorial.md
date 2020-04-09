@@ -3,17 +3,18 @@ layout: tutorial_hands_on
 title: Generalized machine learning pipelines for microbiome datasets
 zenodo_link: https://zenodo.org/record/3632117
 questions:
+
 - How to perform microbiome abundance analysis?
 - How to utilize microbial abundance datasets in machine learning?
 - What is the impact of the normalization method on machine learning?
 - What are the different feature selection methods?
 - How to perform machine learning modeling and prediction using microbial abudance data
+
 objectives:
 - Machine learning modeling and prediction using microbial abundance data for two or more conditions
-time_estimation: '1H30M'
+time_estimation: ''
 key_points:
 - Identify the microbiome signature of the various condition or diseases and potential biomarkers that are useful in improving personalized medicine
-- They will appear at the end of the tutorial
 contributors:
 - jaidevjoshi83
 - blankenberg
@@ -103,7 +104,7 @@ All data required for this tutorial has been made available from Zenodo [![DOI](
 >       > https://zenodo.org/record/800651/files/F3D146_R2.fastq
 >       > https://zenodo.org/record/800651/files/F3D147_R1.fastq
 >       > https://zenodo.org/record/800651/files/F3D147_R2.fastq
->       > https://zenodo.org/record/800651/files/F3D148_R1.fastq
+>       > hSchlossttps://zenodo.org/record/800651/files/F3D148_R1.fastq
 >       > https://zenodo.org/record/800651/files/F3D148_R2.fastq
 >       > https://zenodo.org/record/800651/files/F3D149_R1.fastq
 >       > https://zenodo.org/record/800651/files/F3D149_R2.fastq
@@ -185,15 +186,14 @@ Galaxy equipped with a dataset collection tool to handle multiple datasets at o
 
 Quality control is a vital step in NGS data analysis. A lot of research has gone into developing useful QC metrics for genomics experiments. 
 
-For more information on the topic of quality control, please see training materials
-[here]({% link topics/sequence-analysis/index.md %}).
+For more information on the topic of quality control, please see training materials [here]({% link topics/sequence-analysis/index.md %}).
 
 
 
 ## Create contigs from paired-end reads
 
 
-The **Make.contigs** tool creates the contigs, and uses the paired collection as input. This step combined the forward and reverse reads for each sample, and also combined the resulting contigs from all samples into a single file
+The **Make.contigs** tool creates the contigs, and uses the paired collection as input. This step combined the forward and reverse reads for each sample, and also combined the resulting contigs from all samples into a single file. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 
 > ### {% icon hands_on %} Hands-on: Combine forward and reverse reads into contigs
@@ -221,19 +221,8 @@ The `summary` output files give information per read. The `logfile` outputs also
 
 ## Data Cleaning Step 1
  
+We will improve the quality of our data by removing the low-quality sequences using three methods **Filter by length**, **Remove low-quality contig**  and by removing **deduplicate sequence**. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
-We will improve the quality of our data by removing the low-quality sequences using three methods **Filter by length**, **Remove low-quality contig**  and by removing **deduplicate sequence**.
-
-> ### {% icon hands_on %} Hands-on: Perform data cleaning
->
->
-> 2. Run **Workflow 1: Quality Control** {% icon workflow %} using the following parameters:
->    - *"Send results to a new history"*: `No`
->    - {% icon param-file %} *"1: Contigs"*: the `trim.contigs.fasta` output from **Make.contigs** {% icon tool %}
->    - {% icon param-file %} *"2: Groups"*: the `group file` from **Make.contigs** {% icon tool%}
->
->
-{: .hands_on}
 > ### {% icon hands_on %} Hands-on: Filter reads based on quality and length
 >
 > - **Screen.seqs** {% icon tool %} with the following parameters
@@ -245,9 +234,10 @@ We will improve the quality of our data by removing the low-quality sequences us
 {: .hands_on}
 
 
+
 ## Optimize files for computation
 
- **Unique.seqs** tool will be used to determine the unique reads and the frequency of each read. 
+ **Unique.seqs** tool will be used to determine the unique reads and the frequency of each read. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 
 > ### {% icon hands_on %} Hands-on: Remove duplicate sequences
@@ -256,17 +246,6 @@ We will improve the quality of our data by removing the low-quality sequences us
 >   - {% icon param-file %} *"fasta"*: the `good.fasta` output from **Screen.seqs** {% icon tool %}
 >   - *"output format"*: `Name File`
 >
-> > ### {% icon question %} Question
-> >
-> > How many sequences were unique? How many duplicates were removed?
-> >
-> > > ### {% icon solution %} Solution
-> > > 16,426 unique sequences and 112,446 duplicates.
-> > >
-> > > This can be determined from the number of lines in the fasta (or names) output, compared to the
-> > > number of lines in the fasta file before this step.
-> > {: .solution}
-> {: .question}
 {: .hands_on}
 
 **Count.seqs** tool can be used to combine *group file* and the *names file* into a single *count table* which reduces the file size.
@@ -283,10 +262,9 @@ We will improve the quality of our data by removing the low-quality sequences us
 
 ## Sequence Alignment
 
-For more information on the topic of alignment, please see our training materials  [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
-We are now ready to align our sequences to the reference. This is an important
-step to improve the clustering of your OTUs {% cite Schloss2012 %}.
+This step involves the alignment of the sequences with the reference. This is an important step before clustering which improves the clustering of the OTUs.
+For more information on the topic of alignment, please see our training materials  [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 
 > ### {% icon hands_on %} Hands-on: Align sequences
@@ -308,7 +286,7 @@ To ensure that all our reads overlap our region of interest, we will:
 2. Remove any overhang on either end of the V4 region to ensure our sequences overlap *only* the V4 region, using **Filter.seqs** {% icon tool %}.
 3. Clean our alignment file by removing any columns that have a gap character (`-`, or `.` for terminal gaps) at that position in every sequence (also using **Filter.seqs** {% icon tool %}).
 4. Group near-identical sequences together with **Pre.cluster** {% icon tool %}. Sequences that only differ by one or two bases at this point are likely to represent sequencing errors rather than true biological variation, so we will cluster such sequences together.
-{% if include.short %} 5. Remove Sequencing artefacts known as *chimeras* (discussed in next section). {% endif %}
+For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 {% unless include.short %}
 
@@ -323,13 +301,6 @@ To ensure that all our reads overlap our region of interest, we will:
 >
 >     **Note:** we supply the count table so that it can be updated for the sequences we're removing.
 >
->     > ### {% icon question %} Question
->     >
->     >  How many sequences were removed in this step?
->     > > ### {% icon solution %} Solution
->     > > 128 sequences were removed. This is the number of lines in the bad.accnos output.
->     > {: .solution }
->     {: .question}
 >
 >     Next, we will remove any overhang on either side of the V4 region, and
 >
@@ -348,22 +319,12 @@ To ensure that all our reads overlap our region of interest, we will:
 >   - {% icon param-file %} *"fasta"*: the `filtered fasta` output from **Filter.seqs** {% icon tool %}
 >   - {% icon param-file %} *"name file or count table"*: the `count table` from the last **Screen.seqs** {% icon tool %}
 >
-> > ### {% icon question %} Question
-> >
-> >  How many duplicate sequences did our filter step produce?
-> >
-> > > ### {% icon solution %} Solution
-> > > 3: The number of unique sequences was reduced from 16298 to 16295
-> > {: .solution }
-> {: .question}
 {: .hands_on}
 
 
 ### Pre-clustering
 
-The next step in cleaning our data, is to merge near-identical sequences together. Sequences that only differ
-by around 1 in every 100 bases are likely to represent sequencing errors, not true biological variation. Because
-our contigs are ~250 bp long, we will set the threshold to 2 mismatches.
+In this step, we merge the  near-identical sequences together. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})
 
 > ### {% icon hands_on %} Hands-on: Perform preliminary clustering of sequences
 >
@@ -372,13 +333,6 @@ our contigs are ~250 bp long, we will set the threshold to 2 mismatches.
 >   - {% icon param-file %} *"name file or count table"*: the `count table` from the last **Unique.seqs** {% icon tool %}
 >   - *"diffs"*: `2`
 >
-> > ### {% icon question %} Question
-> >
-> >  How many unique sequences are we left with after this clustering of highly similar sequences?
-> > > ### {% icon solution %} Solution
-> > > 5720: This is the number of lines in the fasta output
-> > {: .solution }
-> {: .question}
 {: .hands_on}
 
 {% endunless %}
@@ -387,7 +341,7 @@ our contigs are ~250 bp long, we will set the threshold to 2 mismatches.
 ## Data Cleaning Step 3 
 
 `VSEARCH` algorithm {% cite Rognes2016 %} that implimented inside mother as 
-**Chimera.vsearch** {% icon tool %} tool. We will use this tool to remove chimera sequences. 
+**Chimera.vsearch** {% icon tool %} tool. We will use this tool to remove chimera sequences. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %}). 
 
 > ### {% icon hands_on %} Hands-on: Clean Aligned sequences and Chimera Removal
 >
@@ -404,22 +358,6 @@ our contigs are ~250 bp long, we will set the threshold to 2 mismatches.
 >
 >    {% include snippets/run_workflow.md %}
 >
-> > ### {% icon question %} Question
-> >
-> > 1. How many chimeric sequences were detected?
-> > 2. How many sequences remain after these cleaning steps?
-> >
-> > > ### {% icon solution %} Solution
-> > >
-> > > 1. There were **3,439 representative sequences** flagged as chimeric. These represent a total of **10,564 total sequences**
-> > >
-> > >    This can be determined by looking at the number of sequences in the `vsearch.accnos` file (3439). To determine how many total sequences these represent, compare the Summary.seqs log output files before and after the chimera filtering step (128,655-118,091=10,564).
-> > >
-> > > 2. There are 2,281 remaining sequences after filtering, clustering of highly similar sequences, and chimera removal.
-> > >
-> > >    This can be determined by looking at the number of sequences in the fasta output of **Remove.seqs** {% icon tool %}
-> > {: .solution }
-> {: .question}
 >
 {: .hands_on}
 
@@ -439,60 +377,18 @@ our contigs are ~250 bp long, we will set the threshold to 2 mismatches.
 >   - {% icon param-file %} *"fasta"*: the `fasta` output from **Pre.cluster** {% icon tool %}
 >   - {% icon param-file %} *"count"*: the `count table` from **Chimera.vsearch** {% icon tool %}
 >
-> > ### {% icon question %} Question
-> >
-> >  How many sequences were flagged as chimeric? what is the percentage? (Hint: summary.seqs)
-> >
-> > > ### {% icon solution %} Solution
-> > > Looking at the chimera.vsearch `accnos` output, we see that **3,439 representative sequences** were flagged as chimeric. If we run summary.seqs on the resulting fasta file and count table, we see that we went from 128,655
-> > > sequences down to 118,091 total sequences in this step, for a reduction of **10,564 total sequences**, or 8.2%. This is a reasonable number of
-> > > sequences to be flagged as chimeric.
-> > {: .solution }
-> {: .question}
 {: .hands_on}
 
 
 
 ## Taxonomic Classification
 
-After thoroughly cleaning the data next step is assigning taxonomies to the sequences. We will use  Bayesian classifier (via the **Classify.seqs** {% icon tool %} tool) and a mothur-formatted [training
-set provided by the Schloss lab](https://www.mothur.org/wiki/RDP_reference_files) based on the RDP (Ribosomal Database Project, {% cite Cole2013 %}) reference taxonomy.
+After thoroughly cleaning the data next step is assigning taxonomies to the sequences. We will use  Bayesian classifier (via the **Classify.seqs** {% icon tool %} tool) and a mothur-formatted [training set provided by the Schloss lab](https://www.mothur.org/wiki/RDP_reference_files) based on the RDP (Ribosomal Database Project, {% cite Cole2013 %}) reference taxonomy. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %}).
 
 
 ## Removal of non-bacterial sequences
 
-Additionally, we will remove 18S rRNA gene fragments or 16S rRNA from Archaea, chloroplasts, and mitochondrial sequences.  These sequences usually never removed by the previous cleaning steps. 
-
-
-
-> ### {% icon hands_on %} Hands-on: Taxonomic Classification and removal of non-bacterial sequences
->
-> 1. **Import the workflow** into Galaxy
->    - Copy the URL (e.g. via right-click) of [this workflow]({{ site.baseurl }}{{ page.dir }}workflows/workflow3_classification.ga) or download it to your computer.
->    - Import the workflow into Galaxy
->
->    {% include snippets/import_workflow.md %}
->
-> 2. Run **Workflow 3: Classification** {% icon workflow %} using the following parameters:
->    - *"Send results to a new history"*: `No`
->    - {% icon param-file %} *"1: Cleaned sequences"*: the `fasta` output from **Remove.seqs** {% icon tool %}
->    - {% icon param-file %} *"2: Count Table"*: the `count table` from **Remove.seqs** {% icon tool%}
->    - {% icon param-file %} *"3: Training set Taxonomy"*: `trainset9_032012.pds.tax` file you imported from Zenodo
->    - {% icon param-file %} *"4: Training set FASTA"*: `trainset9_032012.pds.fasta` file from Zenodo
->
->    {% include snippets/run_workflow.md %}
->
-> > ### {% icon question %} Questions
-> >
-> > How many non-bacterial sequences were removed? Determine both the number of *representative sequences* and *total sequences* removed.
-> >
-> > > ### {% icon solution %} Solution
-> > > There were **20 representative sequences** removed, representing **162 total sequences**.
-> > > This can be determined by looking at the summary.seqs log outputs before the **Remove.lineage** step (after chimera removal), and after.
-> > {: .solution }
-> {: .question}
->
-{: .hands_on}
+Additionally, we will remove 18S rRNA gene fragments or 16S rRNA from Archaea, chloroplasts, and mitochondrial sequences.  These sequences usually never removed by the previous cleaning steps. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %}).
 
 
 > ### {% icon hands_on %} Hands-on: Taxonomic Classification and Removal of undesired sequences
@@ -514,22 +410,6 @@ Additionally, we will remove 18S rRNA gene fragments or 16S rRNA from Archaea,
 >   - {% icon param-file %} *"fasta"*: the `fasta` output from **Remove.seqs** {% icon tool %}
 >   - {% icon param-file %} *"count"*: the `count table` from **Remove.seqs** {% icon tool %}
 >
-> > ### {% icon question %} Questions
-> >
-> > 1. How many unique (representative) sequences were removed in this step?
-> > 2. How many sequences in total?
-> >
-> > > ### {% icon solution %} Solution
-> > > 1. 20 representative sequences were removed.
-> > >    The fasta file output from Remove.seqs had 2281 sequences while the fasta output from Remove.lineages
-> > >    contained 2261 sequences.
-> > >
-> > > 2. 162 total sequences were removed.
-> > >    If you run summary.seqs with the count table, you will see that we now have 2261 unique sequences
-> > >    representing a total of 117,929 total sequences (down from 118,091 before). This means 162 of our
-> > >    sequences were in represented by these 20 representative sequences.
-> > {: .solution }
-> {: .question}
 {: .hands_on}
 
 The data is now as clean as we can get it. In the next section we will use the Mock sample to assess how accurate
@@ -538,10 +418,7 @@ our sequencing and bioinformatics pipeline is.
 
 ## OTU Clustering
 
-In this tutorial we will continue with an OTU-based approach, for the phylotype and phylogenic approaches, please refer to the [mothur wiki page](https://www.mothur.org/wiki/MiSeq_SOP).
-
-
-We will now repeat the OTU clustering we performed on our mock community for our real datasets. We use a slightly different workflow because these tools are faster for larger datasets. We will also normalize our data by subsampling to the level of the sample with the lowest number of sequences in it.
+In this tutorial we will continue with an OTU-based approach, for the phylotype and phylogenic approaches, please refer to the [mothur wiki page](https://www.mothur.org/wiki/MiSeq_SOP). We will now repeat the OTU clustering we performed on our mock community for our real datasets. We use a slightly different workflow because these tools are faster for larger datasets. We will also normalize our data by subsampling to the level of the sample with the lowest number of sequences in it. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %}).
 
 
 ### Remove Mock Sample
@@ -549,7 +426,7 @@ We will now repeat the OTU clustering we performed on our mock community for our
 Now that we have cleaned up our data set as best we can, and assured ourselves of the quality of our sequencing
 pipeline by considering a mock sample, we are almost ready to cluster and classify our real data. But
 before we start, we should first remove the Mock dataset from our data, as we no longer need it. We do this using
-the **Remove.groups** tool:
+the **Remove.groups** tool: (For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %})).
 
 > ### {% icon hands_on %} Hands-on: Remove Mock community from our dataset
 >
@@ -564,15 +441,7 @@ the **Remove.groups** tool:
 
 ### Cluster sequences into OTUs
 
-There are several ways we can perform clustering. For the Mock community, we used the traditional approach of
-using the **Dist.seqs** and **Cluster** tools. Alternatively, we can also use the **Cluster.split** tool. With
-this approach, the sequences are split into bins, and then clustered with each bin.  Taxonomic information is used to guide this process.
-The Schloss lab have [published results](https://www.mothur.org/wiki/MiSeq_SOP#OTUs) showing that if you split at the level of Order or Family, and cluster to a 0.03
-cutoff, you'll get just as good of clustering as you would with the "traditional" approach. In addition, this approach
-is less computationally expensive and can be parallelized, which is especially advantageous when you have large
-datasets.
-
-We'll now use the **Cluster** tool, with `taxlevel` set to `4`, requesting that clustering be done at the *Order* level.
+We will use the Cluster tool, with taxlevel set to 4, to  cluster sequence at Order level. For more information on this topic, please see training materials [here]({% link topics/metagenomics/tutorials/mothur-miseq-sop/tutorial.md %}).
 
 > ### {% icon hands_on %} Hands-on: Cluster our data into OTUs
 >
@@ -622,6 +491,8 @@ We'll now use the **Cluster** tool, with `taxlevel` set to `4`, requesting that 
 > {% endif %}
 {: .hands_on}
 
+We will use subsampling to normalize the number of sequences in all the samples. 
+
 > ### {% icon hands_on %} Hands-on: Subsampling
 >
 > First we want to see how many sequences we have in each sample. We'll do this with the
@@ -630,29 +501,12 @@ We'll now use the **Cluster** tool, with `taxlevel` set to `4`, requesting that 
 > 1. **Count.groups** {% icon tool %} with the following parameters
 >   - {% icon param-file %} *"shared"*: the `shared` file from **Make.shared** {% icon tool %}
 >
->    > ### {% icon question %} Question
->    > How many sequences did the smallest sample consist of?
->    > > ### {% icon solution %} Solution
->    > > The smallest sample is `F3D143`, and consists of 2389 sequences. This is a reasonable number, so we will now subsample all the other samples down to this level.
->    > {: .solution}
->    {: .question}
 >
 > 2. **Sub.sample** {% icon tool %} with the following parameters
 >   - *"Select type of data to subsample"*: `OTU Shared`
 >   - {% icon param-file %} *"shared"*: the `shared` file from **Make.shared** {% icon tool %}
 >   - *"size"*: `2389`
 >
->    > ### {% icon question %} Question
->    >
->    >  What would you expect the result of `count.groups` on this new shared output collection to be? Check if you are correct.
->    > > ### {% icon solution %} Solution
->    > > all groups (samples) should now have 2389 sequences. Run count.groups again on the shared output collection by the sub.sample
->    > > tool to confirm that this is indeed what happened.
->    > {: .solution }
->    {: .question}
->
-> **Note:** since subsampling is a stochastic process, your results from any tools using this subsampled data
-> will deviate from the ones presented here.
 {: .hands_on}
 
 
@@ -673,7 +527,6 @@ Finally, we will generate the biom file for further processing.
 >
 {: .hands_on}
 
-***TODO***: *Consider adding a question to test the learners understanding of the previous exercise*
 
 ## Convert biom file into tabular formate
 
@@ -690,30 +543,25 @@ Finally, we will generate the biom file for further processing.
 >
 >    ***TODO***: *Consider adding a comment or tip box*
 >
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
 
 
 # Utilizing microbial abundance data in machine learning 
 
-Microarray and RNA-Seq data have been previously interrogated with machine learning methods. Microbiome data can also be utilized to explore various potential clinical connections between host, environment and microbial cohorts using supervised machine learning methodology.
+Microarray and RNA-Seq data have been previously interrogated with machine learning methods. Microbiome data can also be utilized to explore various potential clinical connections between host, environment and microbial cohorts using supervised machine learning methodology. 
 
 > ### {% icon comment %} Background: 16s rRNA Amplicon sequencing 
->WGS shotgun and amplicon-based sequencing are the two widely used techniques to analyze microbiome.   
+>WGS shotgun and amplicon-based sequencing are the two widely used techniques to analyze microbiome. The below image explains the rationale behind utilizing machine learning techniques to explore patterns associated with microbiome data.   
 > ![16s rRNA Amplicon sequencing](../../images/microbiomml/ML.jpg) <br><br>
 >
->Microbial abundance is a quantitative approximation of all the  taxa present in a microbiome. 
 > 
 {: .comment}
 
 
 ## Data transformation 
 
-We use **Transform Dataframe** tool to transform data where row represents the sample while column represents the OTU ids 
+We will use **Transform Dataframe** tool to transform data where row represents the sample while column represents the OTU ids 
 
 
 > ### {% icon hands_on %} Hands-on: Task description
@@ -725,14 +573,8 @@ We use **Transform Dataframe** tool to transform data where row represents the s
 >
 >    ***TODO***: *Consider adding a comment or tip box*
 >
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
-
-***TODO***: *Consider adding a question to test the learners understanding of the previous exercise*
 
 
 ## Merging aditinal metadata with abudance count 
@@ -743,15 +585,9 @@ We will use **Merge Metadata** tool to merge class_label and other metadata
 >
 > 1. **Merge MetaData** {% icon tool %} with the following parameters:
 >    - {% icon param-file %} *""*: `output1` (output of **Transform Dataframe** {% icon tool %})
+>    - {% icon param-file %} *"reference"*: `MetaData.tsv` from your history
 >
->    ***TODO***: *Check parameter descriptions*
 >
->    ***TODO***: *Consider adding a comment or tip box*
->
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
 
@@ -759,9 +595,6 @@ We will use **Merge Metadata** tool to merge class_label and other metadata
 
 
 # Machine learning modeling and prediction 
-
-***TODO***: *Consider adding a question to test the learners understanding of the previous exercise*
-
 
 
 
@@ -774,17 +607,13 @@ All the useless columns with zero relative abundance for  more than 98% of the s
 >
 > 1. **Feature Selection** {% icon tool %} with the following parameters:
 >    - *"FeatSelect"*: `Corr`
->        - *""*: `0.7`
+>        - *"Coef"*: `0.7`
 >    - {% icon param-file %} *""*: `output1` (output of **Merge Meta Data** {% icon tool %})
 >
 >    ***TODO***: *Check parameter descriptions*
 >
 >    ***TODO***: *Consider adding a comment or tip box*
 >
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
 
@@ -803,14 +632,6 @@ Feature selection methods commonly applied to explore and eliminate redundant fe
 >    - *"FeatSelect"*: `SelBest`
 >    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
 >
->    ***TODO***: *Check parameter descriptions*
->
->    ***TODO***: *Consider adding a comment or tip box*
->
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
 
@@ -820,8 +641,7 @@ Feature selection methods commonly applied to explore and eliminate redundant fe
 
 ## Assessment of different machine learning algorithms on example data set 
 
-Binary Classification
-We have included eight supervised and one deep learning algorithms for classification: 
+Here we will assess the performance of 8 different machine learning algorithms listed bellow: 
 1. Logistic Regression (LR), a method based on the direct probability model (Stoltzfus et  al. 2011). 
 2. Gaussian Naive-Basie (GNB) algorithms, comparatively easy to apply but often proves to be a very powerful supervised learning method is based on the Bayesian theorem (Friedman et al. 1997). 
 3. K-nearest neighbor (KNB) algorithm, a non-parametric algorithm used in statistical learning to solve classification and regression problems, where the input consists of k proximate training data set in terms of feature space (Cunningham at el. 2007). 
@@ -832,12 +652,10 @@ We have included eight supervised and one deep learning algorithms for classific
 8. Stochastic gradient descent (SGD) is a very powerful algorithm and applies discriminative learning of linear classifiers under convex loss function (Zhang et al. 2004) 
 9. Artificial neural networks (ANN) mimic human neural networks and build on several units of perceptrons. A simple perceptron has one input layer and one neuron while a multilayer perceptron is built on several layers and widely used (Gurney et al. 1996). 
 
-All the above methods classify data in binary or multiclass fashion on the basis of their class labels (positive or negative, i.e.  or 0, 1,  2, etc.  respectively). In order to enhance the robustness and  accuracy of a classifier, 10 fold cross-validation was implemented  (Kohavi et al. 1995). During 10 fold cross-validation, the training data set randomly divided into 10 sets, and the 
-
-
-
+All the above methods classify data in binary or multiclass fashion on the basis of their class labels (positive or negative, i.e.  or 0, 1,  2, etc.  respectively). In order to enhance the robustness and  accuracy of a classifier, 10 fold cross-validation was implemented  (Kohavi et al. 1995). 
 
 > ### {% icon hands_on %} Hands-on: Task description
+> Binary Data 
 >
 > 1. **Binary Prediction** {% icon tool %} with the following parameters:
 >    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
@@ -845,25 +663,17 @@ All the above methods classify data in binary or multiclass fashion on the basis
 >        - *"Specify advanced parameters"*: `No, use program defaults.`
 >    - *"Choose the Test method"*: `Internal`
 >
->
 > 1. **Binary Prediction** {% icon tool %} with the following parameters:
 >    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
 >    - *"MLAlgo"*: `RFC`
 >        - *"Specify advanced parameters"*: `No, use program defaults.`
 >    - *"Choose the Test method"*: `Internal`
 >
->
 > 1. **Binary Prediction** {% icon tool %} with the following parameters:
 >    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
 >    - *"MLAlgo"*: `GBC`
 >        - *"Specify advanced parameters"*: `No, use program defaults.`
 >    - *"Choose the Test method"*: `Internal`
-> 1. **Binary Prediction** {% icon tool %} with the following parameters:
->    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
->    - *"MLAlgo"*: `SGDC`
->        - *"Specify advanced parameters"*: `No, use program defaults.`
->    - *"Choose the Test method"*: `Internal`
->
 >
 > 1. **Binary Prediction** {% icon tool %} with the following parameters:
 >    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
@@ -871,15 +681,53 @@ All the above methods classify data in binary or multiclass fashion on the basis
 >        - *"Specify advanced parameters"*: `No, use program defaults.`
 >    - *"Choose the Test method"*: `Internal`
 >
+> 1. **Binary Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `SGDC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
 >
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
+>
 >
 {: .hands_on}
 
-***TODO***: *Consider adding a question to test the learners understanding of the previous exercise*
+
+
+> ### {% icon hands_on %} Hands-on: Multiclass prediction
+>  For multi class data 
+>
+> 1. **Multi Class Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `DTC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
+>
+> 1. **Multi Class Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `RFC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
+>
+> 1. **Multi Class Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `GBC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
+>
+> 1. **Multi Class Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `SGDC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
+>
+> 1. **Multi Class Prediction** {% icon tool %} with the following parameters:
+>    - {% icon param-file %} *""*: `output1` (output of **Feature Selection** {% icon tool %})
+>    - *"MLAlgo"*: `SGDC`
+>        - *"Specify advanced parameters"*: `No, use program defaults.`
+>    - *"Choose the Test method"*: `Internal`
+>
+>
+{: .hands_on}
 
 
 > ### {% icon hands_on %} Hands-on: Task description
@@ -891,28 +739,10 @@ All the above methods classify data in binary or multiclass fashion on the basis
 >
 >    ***TODO***: *Consider adding a comment or tip box*
 >
->    > ### {% icon comment %} Comment
->    >
->    > A comment about the tool or something else. This box can also be in the main text
->    {: .comment}
 >
 {: .hands_on}
 
-***TODO***: *Consider adding a question to test the learners understanding of the previous exercise*
 
-> ### {% icon question %} Questions
->
-> 1. Question1?
-> 2. Question2?
->
-> > ### {% icon solution %} Solution
-> >
-> > 1. Answer for question1
-> > 2. Answer for question2
-> >
-> {: .solution}
->
-{: .question}
 
 
 
